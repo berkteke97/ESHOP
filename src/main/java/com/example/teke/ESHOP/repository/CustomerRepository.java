@@ -9,5 +9,4 @@ public interface CustomerRepository extends CrudRepository<Customer, UUID> {
 
     Customer findByUsername(String username);
 
-
 }
