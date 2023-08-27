@@ -5,8 +5,6 @@ import com.example.teke.ESHOP.model.Customer;
 import com.example.teke.ESHOP.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Objects;
 import java.util.UUID;
 
