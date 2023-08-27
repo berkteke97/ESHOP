@@ -2,17 +2,16 @@ package com.example.teke.ESHOP.service;
 
 import com.example.teke.ESHOP.model.Customer;
 import com.example.teke.ESHOP.model.Order;
+import com.example.teke.ESHOP.model.Product;
 import com.example.teke.ESHOP.repository.CustomerRepository;
 import com.example.teke.ESHOP.repository.OrderRepository;
 import com.example.teke.ESHOP.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.UUID;
-@ComponentScan(basePackages = {"import com.example.teke.ESHOP"})
+import java.util.*;
+
 @Service
 public class OrderService {
 
@@ -20,6 +19,10 @@ public class OrderService {
     OrderRepository orderRepository;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    private MongoTemplate mongoTemplate;
+    @Autowired
+    ProductRepository productRepository;
 
     public Boolean addToBasket(String username, String barcode, Integer productCount) {
 
@@ -36,8 +39,10 @@ public class OrderService {
             addItem(username, barcode, productCount);
         }
 
+
         return true;
     }
+
     public Order createOrder(String username) {
 
         Order order = new Order();
@@ -51,8 +56,7 @@ public class OrderService {
         order.setBarcode(Collections.emptyList());
         order.setProductCount(Collections.emptyList());
 
-        Order newOrder = orderRepository.save(order);
-
+        Order newOrder = mongoTemplate.save(order);
         return newOrder;
     }
 
@@ -61,7 +65,9 @@ public class OrderService {
         Order existOrder = orderRepository.findByUsername(username);
         existOrder.getBarcode().add(barcode);
         existOrder.getProductCount().add(productCount);
-
+        BigDecimal productPrice = productRepository.findByBarcode(barcode).getPrice();
+        BigDecimal actualAmount = existOrder.getTotalAmount();
+        existOrder.setTotalAmount((productPrice.multiply(BigDecimal.valueOf(productCount))).add(actualAmount));
         return orderRepository.save(existOrder);
     }
 }
