@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/product")
+@RequestMapping("product")
 public class ProductController {
     @Autowired
     ProductService productService;
@@ -24,7 +24,7 @@ public class ProductController {
         return productService.updateProduct(productDTO);
     }
 
-    @GetMapping("products")
+    @GetMapping
     public Iterable<Product> getAllProducts (){
         return productService.getAllProducts();
     }
