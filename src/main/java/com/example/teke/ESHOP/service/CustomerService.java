@@ -5,6 +5,8 @@ import com.example.teke.ESHOP.model.Customer;
 import com.example.teke.ESHOP.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -57,7 +59,6 @@ public class CustomerService {
     public Boolean login(String username, String password) {
 
         Customer existCustomer = customerRepository.findByUsername(username);
-
         if (existCustomer.getUsername().equals(username) && existCustomer.getPassword().equals(password)) {
             return true;
         }
