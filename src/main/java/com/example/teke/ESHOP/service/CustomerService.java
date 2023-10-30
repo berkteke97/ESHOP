@@ -61,10 +61,12 @@ public class CustomerService {
 
         SecurityConfig securityConfig = new SecurityConfig();
 
+
         Customer existCustomer = customerRepository.findByUsername(username);
         if (existCustomer.getUsername().equals(username) && existCustomer.getPassword().equals(password)) {
-            
+
             return true;
+            securityConfig.userDetailsService().loadUserByUsername().
         }
         return false;
     }
