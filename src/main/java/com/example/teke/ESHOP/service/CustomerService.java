@@ -66,7 +66,7 @@ public class CustomerService {
         if (existCustomer.getUsername().equals(username) && existCustomer.getPassword().equals(password)) {
 
             return true;
-            securityConfig.userDetailsService().loadUserByUsername().
+            //securityConfig.userDetailsService().loadUserByUsername().getPassword();
         }
         return false;
     }
