@@ -23,11 +23,11 @@ public class CustomerController {
     public Customer updateCustomer(@RequestBody CustomerDTO customerDTO) throws Exception{
         return customerService.updateCustomer(customerDTO);
     }
-
+/*
     @PostMapping("/login")
     public Boolean login(String username, String password) throws  Exception{
         return customerService.login(username,password);
-    }
+    }*/
 
     @GetMapping("/customers")
     public Iterable<Customer> findAll(){
