@@ -8,6 +8,7 @@ import org.apache.catalina.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+<<<<<<< Updated upstream
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+=======
+>>>>>>> Stashed changes
 import java.util.Objects;
 import java.util.UUID;
 
@@ -66,7 +69,24 @@ public class CustomerService {
     public Iterable<Customer> findAll() {
         return customerRepository.findAll();
     }
+<<<<<<< Updated upstream
+
+=======
+/*
+    public Boolean login(String username, String password) {
+
+        SecurityConfig securityConfig = new SecurityConfig();
 
 
+        Customer existCustomer = customerRepository.findByUsername(username);
+        if (existCustomer.getUsername().equals(username) && existCustomer.getPassword().equals(password)) {
 
+            return true;
+            //securityConfig.userDetailsService().loadUserByUsername().getPassword();
+        }
+        return false;
+    }
+>>>>>>> Stashed changes
+
+*/
 }
