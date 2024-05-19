@@ -19,6 +19,7 @@ public class Product {
     private int stock;
     private String detail;
     private String barcode;
+    //private int counter;
 
 
 

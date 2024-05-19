@@ -13,4 +13,5 @@ public class CustomerDTO {
     private String address;         //  Address
     private Boolean agreement;
     private Boolean activeOrder;
+    private String user_role;
 }

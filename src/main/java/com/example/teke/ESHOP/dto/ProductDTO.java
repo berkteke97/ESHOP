@@ -14,5 +14,6 @@ public class ProductDTO {
     private int stock;
     private String detail;
     private String barcode;
+    //private int counter;
 
 }
