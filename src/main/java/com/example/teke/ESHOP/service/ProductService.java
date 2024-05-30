@@ -2,7 +2,9 @@ package com.example.teke.ESHOP.service;
 
 import com.example.teke.ESHOP.dto.ProductDTO;
 import com.example.teke.ESHOP.model.Product;
+import com.example.teke.ESHOP.other.ContentBasedRecommender;
 import com.example.teke.ESHOP.repository.ProductRepository;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -10,12 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.management.RuntimeMBeanException;
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ProductService {
+
+    ContentBasedRecommender recommender = new ContentBasedRecommender();
 
     @Autowired
     ProductRepository productRepository;
@@ -86,6 +92,11 @@ public class ProductService {
         existProduct.setStock(existProduct.getStock() - count);
         Product product = productRepository.save(existProduct);
         return product;
+    }
+
+    public List<Product> productRecommender(Product product) throws IOException, ParseException {
+        List<Product> similarProducts = recommender.recommendSimilarProducts(product, 3);
+        return similarProducts;
     }
 
 

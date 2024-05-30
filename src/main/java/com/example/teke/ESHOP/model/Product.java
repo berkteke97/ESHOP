@@ -21,6 +21,28 @@ public class Product {
     private String barcode;
     //private int counter;
 
+    public Product(){}
 
+    public Product(String barcode, String brand, String categoryName,String detail){
+        this.barcode = barcode;
+        this.brand = brand;
+        this.categoryName = categoryName;
+        this.detail = detail;
+    }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
 }

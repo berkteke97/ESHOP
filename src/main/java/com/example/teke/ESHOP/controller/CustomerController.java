@@ -34,8 +34,7 @@ public class CustomerController {
     public Customer updateCustomer(@RequestBody CustomerDTO customerDTO) throws Exception {
         return customerService.updateCustomer(customerDTO);
     }
-<<<<<<< Updated upstream
-=======
+
 /*
     @PostMapping("/login")
     public Boolean login(String username, String password) throws  Exception{
@@ -47,10 +46,6 @@ public class CustomerController {
         return customerService.findAll();
     }
 
-
-
-
->>>>>>> Stashed changes
 
 }
 
