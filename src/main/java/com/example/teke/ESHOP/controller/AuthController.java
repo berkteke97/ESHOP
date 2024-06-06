@@ -1,12 +1,10 @@
 package com.example.teke.ESHOP.controller;
 
-// AuthController.java
-
 import com.example.teke.ESHOP.model.Customer;
 import com.example.teke.ESHOP.model.LoginRequest;
 import com.example.teke.ESHOP.model.LoginResponse;
 import com.example.teke.ESHOP.repository.CustomerRepository;
-import com.example.teke.ESHOP.service.CustomerService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +15,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class AuthController {
+
     @Autowired
     private CustomerRepository customerRepository;
+
+    private static final String SECRET_KEY = "2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D";
+    private static final long EXPIRATION_TIME = 3600000; // 1 hour
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
@@ -32,45 +35,47 @@ public class AuthController {
         Customer customer = customerRepository.findByUsername(user);
 
         if (customer != null && customer.getPassword().equals(pass)) {
-            // Token oluşturma
             String token = generateToken(customer);
-
-            // Yanıtı hazırlama
             LoginResponse response = new LoginResponse(token, user);
-
             return ResponseEntity.ok(response);
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-
-
     private String generateToken(Customer customer) {
-        // Secret key for signing the token (choose a secure key and keep it secret)
-        String secretKey = "2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D";
-
-        // Token expiration time (e.g., 1 hour)
-        long expirationTime = 3600000;
-
-        // Current time and expiration time
         long currentTime = System.currentTimeMillis();
-        Date expirationDate = new Date(currentTime + expirationTime);
+        Date expirationDate = new Date(currentTime + EXPIRATION_TIME);
 
-        // Payload: Define the claims (data) you want to include in the token
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", customer.getId());
         claims.put("username", customer.getUsername());
+        claims.put("email", customer.getEmail());
 
-        // Create and sign the token
-        String token = Jwts.builder()
-                .setClaims(claims) // Include the claims
-                .setSubject(customer.getUsername()) // Set subject (user's username)
-                .setIssuedAt(new Date(currentTime)) // Set the token's issue time
-                .setExpiration(expirationDate) // Set the token's expiration time
-                .signWith(SignatureAlgorithm.HS256, secretKey) // Sign the token with the secret key
-                .compact(); // Build the token
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(customer.getUsername())
+                .setIssuedAt(new Date(currentTime))
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
 
-        return token;
+    private Claims decodeToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    @GetMapping("/getUserInfo")
+    public ResponseEntity<Map<String, Object>> getUserInfo(@RequestHeader("Authorization") String token) {
+        Claims claims = decodeToken(token.replace("Bearer ", ""));
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("userId", claims.get("userId"));
+        userInfo.put("username", claims.get("username"));
+        userInfo.put("email", claims.get("email"));
+
+        return ResponseEntity.ok(userInfo);
     }
 }
