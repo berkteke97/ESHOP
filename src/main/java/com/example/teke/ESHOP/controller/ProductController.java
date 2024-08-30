@@ -6,6 +6,8 @@ import com.example.teke.ESHOP.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @CrossOrigin
 @RestController
 @RequestMapping("product")
@@ -42,6 +44,11 @@ public class ProductController {
     @PostMapping("/sellProduct")
     public Product sellProduct(String barcode, int count){
         return productService.sellProduct(barcode, count);
+    }
+
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable UUID id) {
+        return productService.getProductById(id);
     }
 
 }

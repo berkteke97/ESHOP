@@ -9,7 +9,7 @@ public class CustomerDTO {
     private String name;			//  Name
     private String surname;			//  surname
     private String email;		    //  Email
-    private String phone;		        //  phone number
+    private String phone;		    //  phone number
     private String address;         //  Address
     private Boolean agreement;
     private Boolean activeOrder;

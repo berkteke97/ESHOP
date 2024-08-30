@@ -73,6 +73,14 @@ public class ProductService {
         return productRepository.findByCategoryName(categoryName);
     }
 
+    public Product getProductById(UUID id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            return product.get();
+        } else {
+            throw new RuntimeException("Product not found with ID: " + id);
+        }
+    }
 
     public Product deleteByBarcode(String barcode) {
         Optional<Product> productDb = Optional.ofNullable(this.productRepository.findByBarcode(barcode));
