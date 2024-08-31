@@ -16,8 +16,14 @@ public class ProductController {
     ProductService productService;
 
 
+    /*
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody ProductDTO productDTO) throws Exception{
+        return productService.addProduct(productDTO);
+    }*/
+
+    @PostMapping("/addProduct")
+    public Product addProduct(@ModelAttribute ProductDTO productDTO) throws Exception {
         return productService.addProduct(productDTO);
     }
 

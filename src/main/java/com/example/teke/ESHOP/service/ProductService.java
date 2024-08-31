@@ -28,11 +28,13 @@ public class ProductService {
 
     public Product addProduct(ProductDTO productDTO) throws Exception {
 
-        Product existProduct = productRepository.findByBarcode(productDTO.getBarcode());
+        /*Product existProduct = (Product) productRepository.findByDetail(productDTO.getDetail());
 
         if (!ObjectUtils.isEmpty(existProduct)) {
             throw new RuntimeException("Product exist!");
         }
+
+         */
 
         Product newProduct = new Product();
 
@@ -44,7 +46,9 @@ public class ProductService {
         newProduct.setDetail(productDTO.getDetail());
         newProduct.setPrice(productDTO.getPrice());
         newProduct.setCategoryName(productDTO.getCategoryName());
-        newProduct.setImageUrl(productDTO.getImageUrl());
+        if (productDTO.getImageFile() != null && !productDTO.getImageFile().isEmpty()) {
+            newProduct.setImageUrl(productDTO.getImageFile().getBytes());
+        }
 
         Product product = productRepository.save(newProduct);
         return product;
@@ -72,6 +76,7 @@ public class ProductService {
     public Iterable<Product> getProductsByCategory(String categoryName) {
         return productRepository.findByCategoryName(categoryName);
     }
+
 
     public Product getProductById(UUID id) {
         Optional<Product> product = productRepository.findById(id);

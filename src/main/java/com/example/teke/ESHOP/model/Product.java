@@ -15,8 +15,8 @@ public class Product {
     private BigDecimal price;
     private String categoryName;            //Category classındaki name ile eşdeğer ise
     private String brand;
-    private String imageUrl;
     private int stock;
+    private byte[] imageUrl;
     private String detail;
     private String barcode;
     //private int counter;
@@ -44,5 +44,13 @@ public class Product {
 
     public String getDetail() {
         return detail;
+    }
+
+    public byte[] getImage() {
+        return imageUrl;
+    }
+
+    public void setImage(byte[] image) {
+        this.imageUrl = imageUrl;
     }
 }
