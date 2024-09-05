@@ -11,7 +11,7 @@ public class ProductDTO {
     private BigDecimal price;
     private String categoryName;            //Category classındaki name ile eşdeğer ise
     private String brand;
-    private  byte[] imageUrl;
+   // private  byte[] imageUrl;
     private int stock;
     private String detail;
     private String barcode;

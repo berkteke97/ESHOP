@@ -21,6 +21,14 @@ public class Product {
     private String barcode;
     //private int counter;
 
+    public byte[] getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(byte[] imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Product(){}
 
     public Product(String barcode, String brand, String categoryName,String detail){
@@ -46,11 +54,5 @@ public class Product {
         return detail;
     }
 
-    public byte[] getImage() {
-        return imageUrl;
-    }
 
-    public void setImage(byte[] image) {
-        this.imageUrl = imageUrl;
-    }
 }

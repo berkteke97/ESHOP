@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.RuntimeMBeanException;
 import java.io.IOException;
@@ -46,27 +47,53 @@ public class ProductService {
         newProduct.setDetail(productDTO.getDetail());
         newProduct.setPrice(productDTO.getPrice());
         newProduct.setCategoryName(productDTO.getCategoryName());
-        if (productDTO.getImageFile() != null && !productDTO.getImageFile().isEmpty()) {
-            newProduct.setImageUrl(productDTO.getImageFile().getBytes());
+        MultipartFile imageFile = productDTO.getImageFile();
+        if (imageFile != null && !imageFile.isEmpty()) {
+            newProduct.setImageUrl(imageFile.getBytes());
         }
 
         Product product = productRepository.save(newProduct);
         return product;
     }
-
+/*
     public Product updateProduct(ProductDTO productDTO) {
         Product product = productRepository.findByBarcode(productDTO.getBarcode());
 
         if (ObjectUtils.isEmpty(product)) {
             throw new RuntimeException("Product not exist!");
         }
-        product.setImageUrl(productDTO.getImageUrl());
         product.setPrice(product.getPrice());
         product.setDetail(product.getDetail());
         product.setStock(product.getStock());
 
         Product product1 = productRepository.save(product);
         return product1;
+    }
+*/
+    public Product updateProduct(ProductDTO productDTO) throws IOException {
+        // Ürünü barkod ile bul
+        Product product = productRepository.findByBarcode(productDTO.getBarcode());
+
+        // Eğer ürün yoksa hata fırlat
+        if (ObjectUtils.isEmpty(product)) {
+            throw new RuntimeException("Product not exist!");
+        }
+
+        // Ürün bilgilerini güncelle
+        product.setPrice(productDTO.getPrice());
+        product.setDetail(productDTO.getDetail());
+        product.setStock(productDTO.getStock());
+        product.setBrand(productDTO.getBrand());
+        product.setCategoryName(productDTO.getCategoryName());
+
+        // Eğer yeni bir resim dosyası varsa onu güncelle
+        if (productDTO.getImageFile() != null && !productDTO.getImageFile().isEmpty()) {
+            // Resmi byte[] formatına çevirip kaydet
+            product.setImageUrl(productDTO.getImageFile().getBytes());
+        }
+
+        // Güncellenen ürünü veritabanına kaydet
+        return productRepository.save(product);
     }
 
     public Iterable<Product> getAllProducts() {

@@ -5,7 +5,9 @@ import com.example.teke.ESHOP.model.Product;
 import com.example.teke.ESHOP.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @CrossOrigin
@@ -21,9 +23,34 @@ public class ProductController {
     public Product addProduct(@RequestBody ProductDTO productDTO) throws Exception{
         return productService.addProduct(productDTO);
     }*/
-
+/*
     @PostMapping("/addProduct")
     public Product addProduct(@ModelAttribute ProductDTO productDTO) throws Exception {
+        return productService.addProduct(productDTO);
+    }
+*/
+
+
+    @PostMapping("/addProduct")
+    public Product addProduct(
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("categoryName") String categoryName,
+            @RequestParam("brand") String brand,
+            @RequestParam("stock") int stock,
+            @RequestParam("detail") String detail,
+            @RequestParam("barcode") String barcode,
+            @RequestParam("imageFile") MultipartFile imageFile) throws Exception {
+
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setPrice(price);
+        productDTO.setCategoryName(categoryName);
+        productDTO.setBrand(brand);
+        productDTO.setStock(stock);
+        productDTO.setDetail(detail);
+        productDTO.setBarcode(barcode);
+        productDTO.setImageFile(imageFile);
+
+        // Burada service çağrısı yapılıyor.
         return productService.addProduct(productDTO);
     }
 
